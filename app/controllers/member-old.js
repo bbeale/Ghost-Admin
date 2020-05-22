@@ -11,7 +11,7 @@ import {task} from 'ember-concurrency';
 const SCRATCH_PROPS = ['name', 'email', 'note'];
 
 export default Controller.extend({
-    members: controller(),
+    members: controller('members-old'),
     session: service(),
     dropdown: service(),
     notifications: service(),
@@ -53,7 +53,7 @@ export default Controller.extend({
 
         deleteMember() {
             return this.member.destroyRecord().then(() => {
-                return this.transitionToRoute('members-dev');
+                return this.transitionToRoute('members-old');
             }, (error) => {
                 return this.notifications.showAPIError(error, {key: 'member.delete'});
             });
@@ -101,7 +101,7 @@ export default Controller.extend({
             yield member.save();
             member.updateLabels();
             // replace 'member.new' route with 'member' route
-            this.replaceRoute('member', member);
+            this.replaceRoute('member-old', member);
 
             return member;
         } catch (error) {
